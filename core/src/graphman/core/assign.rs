@@ -8,7 +8,7 @@ use graph_store_postgres::{
 use std::thread;
 use std::time::Duration;
 
-use crate::manager::deployment::DeploymentSearch;
+use crate::graphman::deployment::DeploymentSearch;
 
 pub fn unassign(
     primary: ConnectionPool,
