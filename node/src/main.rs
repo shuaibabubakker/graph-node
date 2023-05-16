@@ -36,7 +36,6 @@ use graph_core::{
 };
 use graph_graphql::prelude::GraphQlRunner;
 use graph_node::opt;
-use graph_server_graphman::GraphQLServer as GraphQLQraphmanServer;
 use graph_server_http::GraphQLServer as GraphQLQueryServer;
 use graph_server_index_node::IndexNodeServer;
 use graph_server_json_rpc::JsonRpcServer;
@@ -439,8 +438,6 @@ async fn main() {
         ));
         let mut graphql_server =
             GraphQLQueryServer::new(&logger_factory, graphql_runner.clone(), node_id.clone());
-        let mut graphman_graphql_server =
-            GraphQLQraphmanServer::new(&logger_factory, graphql_runner.clone(), node_id.clone());
         let subscription_server =
             GraphQLSubscriptionServer::new(&logger, graphql_runner.clone(), network_store.clone());
 
@@ -621,14 +618,6 @@ async fn main() {
                 .await
                 .expect("Failed to start metrics server")
         });
-
-        // Serve Graphman commands over HTTP GraphQL server
-        graph::spawn(
-            graphman_graphql_server
-                .serve(graphman_port, ws_port)
-                .expect("Failed to start GraphQL graphman server")
-                .compat(),
-        );
     };
 
     graph::spawn(launch_services(logger.clone(), env_vars.cheap_clone()));
