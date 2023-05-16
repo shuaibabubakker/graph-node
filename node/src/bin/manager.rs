@@ -4,6 +4,7 @@ use git_testament::{git_testament, render_testament};
 use graph::bail;
 use graph::endpoint::EndpointMetrics;
 use graph::log::logger_with_levels;
+use graph::prelude::web3::contract::deploy;
 use graph::prelude::{MetricsRegistry, BLOCK_NUMBER_MAX};
 use graph::{data::graphql::effort::LoadManager, prelude::chrono, prometheus::Registry};
 use graph::{
@@ -14,14 +15,15 @@ use graph::{
     url::Url,
 };
 use graph_chain_ethereum::{EthereumAdapter, EthereumNetworks};
-use graph_core::graphman::{deployment::DeploymentSearch, utils::PanicSubscriptionManager};
-use graph_graphql::prelude::GraphQlRunner;
-use graph_node::config::{self, Config as Cfg};
-use graph_node::manager::commands;
-use graph_node::manager::commands::utils::color::Terminal;
-use graph_node::{
+use graph_core::graphman::config::{self, Config as Cfg};
+use graph_core::graphman::context::GraphmanContext as Context;
+use graph_core::graphman::{
     chain::create_all_ethereum_networks, store_builder::StoreBuilder, MetricsContext,
 };
+use graph_core::graphman::{deployment::DeploymentSearch, utils::PanicSubscriptionManager};
+use graph_graphql::prelude::GraphQlRunner;
+use graph_node::manager::commands;
+use graph_node::manager::commands::utils::color::Terminal;
 use graph_store_postgres::connection_pool::PoolCoordinator;
 use graph_store_postgres::ChainStore;
 use graph_store_postgres::{
@@ -30,8 +32,8 @@ use graph_store_postgres::{
 };
 use lazy_static::lazy_static;
 use std::collections::BTreeMap;
+use std::str::FromStr;
 use std::{collections::HashMap, env, num::ParseIntError, sync::Arc, time::Duration};
-const VERSION_LABEL_KEY: &str = "version";
 
 git_testament!(TESTAMENT);
 
@@ -978,8 +980,6 @@ impl Context {
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let opt = Opt::parse();
-
-    println!("OPT: {:?}", opt);
 
     Terminal::set_color_preference(&opt.color);
 
