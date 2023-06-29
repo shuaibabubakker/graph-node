@@ -6,6 +6,7 @@
     "dynamic-data-source",
     "fatal-error",
     "file-data-sources",
+    "block-handlers",
     "typename"
   ]
 }

@@ -41,6 +41,7 @@ pub const INTEGRATION_TEST_DIRS: &[&str] = &[
     "value-roundtrip",
     "int8",
     "derived-loaders",
+    "block-handlers",
 ];
 
 #[derive(Debug, Clone)]
