@@ -87,6 +87,7 @@ const THINGS_GQL: &str = r#"
         bigIntArray: [BigInt!]!
         color: Color,
         int8: Int8,
+        timestamp: Timestamp
     }
 
     interface Pet {
@@ -181,6 +182,7 @@ lazy_static! {
             bool: true,
             int: std::i32::MAX,
             int8: std::i64::MAX,
+            timestamp: "679736164000",
             bigDecimal: decimal.clone(),
             bigDecimalArray: vec![decimal.clone(), (decimal + 1.into())],
             string: "scalar",
