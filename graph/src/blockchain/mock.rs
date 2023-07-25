@@ -70,6 +70,10 @@ impl<C: Blockchain> DataSource<C> for MockDataSource {
         todo!()
     }
 
+    fn end_block(&self) -> Option<BlockNumber> {
+        todo!()
+    }
+
     fn name(&self) -> &str {
         todo!()
     }

@@ -47,6 +47,10 @@ impl blockchain::DataSource<Chain> for DataSource {
         self.source.start_block
     }
 
+    fn end_block(&self) -> Option<BlockNumber> {
+        self.source.end_block
+    }
+
     fn match_and_decode(
         &self,
         trigger: &<Chain as Blockchain>::TriggerData,
@@ -381,4 +385,6 @@ pub(crate) struct Source {
     pub(crate) owner: Option<String>,
     #[serde(rename = "startBlock", default)]
     pub(crate) start_block: BlockNumber,
+    #[serde(rename = "endBlock")]
+    pub(crate) end_block: Option<BlockNumber>,
 }

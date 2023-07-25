@@ -44,6 +44,7 @@ pub struct DataSource {
     pub manifest_idx: u32,
     pub address: Option<Address>,
     pub start_block: BlockNumber,
+    pub end_block: Option<BlockNumber>,
     pub mapping: Mapping,
     pub context: Arc<Option<DataSourceContext>>,
     pub creation_block: Option<BlockNumber>,
@@ -92,6 +93,7 @@ impl blockchain::DataSource<Chain> for DataSource {
             manifest_idx: template.manifest_idx,
             address: Some(address),
             start_block: 0,
+            end_block: None,
             mapping: template.mapping,
             context: Arc::new(context),
             creation_block: Some(creation_block),
@@ -105,6 +107,10 @@ impl blockchain::DataSource<Chain> for DataSource {
 
     fn start_block(&self) -> BlockNumber {
         self.start_block
+    }
+
+    fn end_block(&self) -> Option<BlockNumber> {
+        self.end_block
     }
 
     fn match_and_decode(
@@ -146,6 +152,8 @@ impl blockchain::DataSource<Chain> for DataSource {
             address,
             mapping,
             context,
+            // EBTODO: Re-evaluate if endBlock need to be considered
+            end_block: _,
 
             // The creation block is ignored for detection duplicate data sources.
             // Contract ABI equality is implicit in `mapping.abis` equality.
@@ -217,6 +225,8 @@ impl blockchain::DataSource<Chain> for DataSource {
             manifest_idx,
             address,
             start_block: 0,
+            // EBTODO: Re-evaluate if this needs to be set to done_at,
+            end_block: done_at,
             mapping: template.mapping.clone(),
             context: Arc::new(context),
             creation_block,
@@ -311,6 +321,7 @@ impl DataSource {
             manifest_idx,
             address: source.address,
             start_block: source.start_block,
+            end_block: source.end_block,
             mapping,
             context: Arc::new(context),
             creation_block,
