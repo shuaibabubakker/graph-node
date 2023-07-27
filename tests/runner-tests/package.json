@@ -6,6 +6,7 @@
     "dynamic-data-source",
     "fatal-error",
     "file-data-sources",
+    "arweave-file-data-sources",
     "typename"
   ]
 }
