@@ -109,8 +109,11 @@ impl blockchain::DataSource<Chain> for DataSource {
         self.start_block
     }
 
-    fn end_block(&self) -> Option<BlockNumber> {
-        self.end_block
+    fn has_expired(&self, block: BlockNumber) -> bool {
+        match self.end_block {
+            Some(end_block) => block > end_block,
+            None => false,
+        }
     }
 
     fn match_and_decode(
@@ -152,7 +155,6 @@ impl blockchain::DataSource<Chain> for DataSource {
             address,
             mapping,
             context,
-            // EBTODO: Re-evaluate if endBlock need to be considered
             end_block: _,
 
             // The creation block is ignored for detection duplicate data sources.
@@ -225,8 +227,7 @@ impl blockchain::DataSource<Chain> for DataSource {
             manifest_idx,
             address,
             start_block: 0,
-            // EBTODO: Re-evaluate if this needs to be set to done_at,
-            end_block: done_at,
+            end_block: None,
             mapping: template.mapping.clone(),
             context: Arc::new(context),
             creation_block,

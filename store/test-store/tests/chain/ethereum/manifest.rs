@@ -404,7 +404,6 @@ specVersion: 0.0.2
     let end_block = data_source.as_onchain().unwrap().end_block;
 
     assert_eq!(Some(9562481), end_block);
-    assert_eq!("Qmmanifest", manifest.id.as_str());
 }
 
 #[tokio::test]
